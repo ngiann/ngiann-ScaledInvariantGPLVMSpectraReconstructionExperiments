@@ -1,4 +1,6 @@
-using Plots, JLD2, Random
+using ForwardNeuralNetworks, Printf, Optim, Plots, JLD2, Random
+
+pythonplot()  
 
 include("getFakeFilterMatrixB.jl")
 
@@ -12,12 +14,26 @@ function create_plot_ducks_scaled_invariant_gplvm()
 
     # create filtered images
     σtest = 1e-2
+    Σ = randn(MersenneTwister(1), 30, 10)*σtest
 
-    Φ = B*Ytest + randn(MersenneTwister(1), 256, 10)*σtest
+    Φ = B*Ytest + Σ
 
-    # get predictive function for scaled_invariant gplvm
-    # infer2,getll2,pred2 = scaleinvariantgplvmpredictive(res=res2,net=net2, Q=3, D = 256, N = 72);
+    # # get predictive function for scaled_invariant gplvm
+    # infer = scaleinvariantgplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)[1]
 
-    scatter(X[1,:], X[2,:], aspect_ratio=:equal, legend = false)
+    # Xtest = map(1:10) do n
+
+    #     infer(B, Φ[:,[n]], Σ[:,[n]]; repeat=10, seed=1)[1]
+
+    # end
+
+    plot(X[1,:], X[2,:], X[3,:], aspect_ratio=:equal, legend = false, marker = :circle)
+    for n in 1:2:62
+        annotate!(X[1,n], X[2,n], X[3,n], @sprintf("%d",  n))    
+    end
+
+    # for n in 1:10
+    #     scatter!([Xtest[n][1]], [Xtest[n][2]], [Xtest[n][3]], marker = :star, color=:red, markersize=12)
+    # end
 
 end
