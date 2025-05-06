@@ -1,7 +1,10 @@
 [deps]
 COIL20 = "89a83b74-8f37-4a54-95ad-2bd27d2beab5"
+ForwardNeuralNetworks = "41bbd1a4-0eca-4bcd-b6b1-8656d032eaeb"
 JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+PythonPlot = "274fc56d-3b97-40fa-a1cd-1b4a50311bf9"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
