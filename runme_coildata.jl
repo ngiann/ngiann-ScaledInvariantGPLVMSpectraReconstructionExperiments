@@ -53,17 +53,3 @@ let
     X,rec,res,net,fmin,c = scaleinvariantgplvm(Yobs,S,iterations = 150_000, Q = 2, H = 30, backend = ScaledInvariantGPLVMSpectraReconstruction.RecBackend(), seed=1);
     JLD2.save("scaleinv_positive_gplvm_coil_2D.jld2", "X", X, "rec", rec, "net", net, "fmin", fmin, "c", c)
 end
-
-################
-# create plots #
-################
-
-# create plot for scale-invariant gpplvm
-let
-    X = JLD2.load("scaleinv_gplvm_coil.jld2", "X")
-    plot3D(X[1,:], X[2,:], X[3,:], "-bo")
-
-    # infer latent coordinates of test data
-    # infer, getll, pred = scaleinvariantgplvmpredictive(res=res ,net=net, Q=3, D = 256, N = 72)
-
-end
