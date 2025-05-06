@@ -18,6 +18,7 @@ S = (σ/10)*randn(size(Y));
 
 Yobs = Y*C + S*C
 
+JLD2.save("duck_dataset.jld2","Y",Y,"Ytest",Ytest,"S",S,"Yobs",Yobs)
 
 ##########
 # warmup #
