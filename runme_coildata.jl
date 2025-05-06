@@ -18,8 +18,6 @@ S = (σ/10)*randn(size(Y));
 
 Yobs = Y*C + S*C
 
-# filter matrix
-B = randn(rng, 30, 256)
 
 ##########
 # warmup #
@@ -39,17 +37,17 @@ end
 # run GPLVM and save results
 let
     X,rec,res,net,fmin = gplvm(Yobs, S, iterations = 150_000, Q = 2, H = 30, seed = 1);
-    JLD2.save("gplvm_coil_2D.jld2", "X", X, "rec", rec, "net", net, "fmin", fmin)
+    JLD2.save("gplvm_coil_2D.jld2", "X", X, "rec", rec, "res", res, "net", net, "fmin", fmin)
 end
 
 # run scale-invariance GPLVM and save results
 let
     X,rec,res,net,fmin,c = scaleinvariantgplvm(Yobs,S,iterations = 150_000, Q=2, H = 30, backend = ScaledInvariantGPLVMSpectraReconstruction.LinearBackend(), seed=1);
-    JLD2.save("scaleinv_gplvm_coil_2D.jld2", "X", X, "rec", rec, "net", net, "fmin", fmin, "c", c)
+    JLD2.save("scaleinv_gplvm_coil_2D.jld2", "X", X, "rec", rec, "res", res, "net", net, "fmin", fmin, "c", c)
 end
 
 # run scale-invariance GPLVM and save results
 let
     X,rec,res,net,fmin,c = scaleinvariantgplvm(Yobs,S,iterations = 150_000, Q = 2, H = 30, backend = ScaledInvariantGPLVMSpectraReconstruction.RecBackend(), seed=1);
-    JLD2.save("scaleinv_positive_gplvm_coil_2D.jld2", "X", X, "rec", rec, "net", net, "fmin", fmin, "c", c)
+    JLD2.save("scaleinv_positive_gplvm_coil_2D.jld2", "X", X, "rec", rec, "res", res, "net", net, "fmin", fmin, "c", c)
 end
