@@ -6,9 +6,9 @@ include("getFakeFilterMatrixB.jl")
 
 function create_plot_ducks_scaled_invariant_gplvm()
 
-    X   = JLD2.load("scaleinv_gplvm_coil_2D.jld2")["X"]
-    res = JLD2.load("scaleinv_gplvm_coil_2D.jld2")["res"]
-    net = JLD2.load("scaleinv_gplvm_coil_2D.jld2")["net"]
+    X   = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["X"]
+    res = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["res"]
+    net = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["net"]
 
     Ytest = JLD2.load("duck_dataset.jld2")["Ytest"]
     tr_indices = JLD2.load("duck_dataset.jld2")["tr_indices"]
