@@ -10,30 +10,43 @@ function create_plot_ducks_scaled_invariant_gplvm()
     res = JLD2.load("scaleinv_gplvm_coil_2D.jld2")["res"]
     net = JLD2.load("scaleinv_gplvm_coil_2D.jld2")["net"]
 
+    Ytest = JLD2.load("duck_dataset.jld2")["Ytest"]
+    tr_indices = JLD2.load("duck_dataset.jld2")["tr_indices"]
+    te_indices = JLD2.load("duck_dataset.jld2")["te_indices"]
+
     B = getFakeFilterMatrixB()
 
     # create filtered images
     σtest = 1e-2
     Σ = randn(MersenneTwister(1), 30, 10)*σtest
 
+    
     Φ = B*Ytest + Σ
 
     # # get predictive function for scaled_invariant gplvm
-    # infer = scaleinvariantgplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)[1]
+    infer = scaleinvariantgplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)[1]
 
-    # Xtest = map(1:10) do n
+    Xtest = map(1:10) do n
 
-    #     infer(B, Φ[:,[n]], Σ[:,[n]]; repeat=10, seed=1)[1]
+        infer(B, Φ[:,[n]], Σ[:,[n]]; repeat=10, seed=1)[1]
 
-    # end
-
-    plot(X[1,:], X[2,:], X[3,:], aspect_ratio=:equal, legend = false, marker = :circle)
-    for n in 1:2:62
-        annotate!(X[1,n], X[2,n], X[3,n], @sprintf("%d",  n))    
     end
 
-    # for n in 1:10
-    #     scatter!([Xtest[n][1]], [Xtest[n][2]], [Xtest[n][3]], marker = :star, color=:red, markersize=12)
-    # end
+    XtestMatrix = reduce(hcat, Xtest)
+
+    offset = 0.03
+
+    plot3d(X[1,:], X[2,:], X[3,:], aspect_ratio=:equal, legend = false, linewidth=0.5   )
+    scatter3d!(X[1,:], X[2,:], X[3,:], markersize=14, color = :blue)
+    for n in 1:62
+        # scatter3d!([X[1,n]], [X[2,n]], [X[3,n]], marker = :circle, color=:blue, markersize=12, depthshade = true)
+        annotate!(X[1,n]+offset, X[2,n]+offset, X[3,n]+offset, (@sprintf("%d",  tr_indices[n]), :black, 20), alpha=1) 
+    end
+
+    scatter!(XtestMatrix[1,:],XtestMatrix[2,:],XtestMatrix[3,:], markersize=18, color = :red)
+        
+    for n in 1:10
+        annotate!(Xtest[n][1]+offset, Xtest[n][2]+offset, Xtest[n][3]+offset, (@sprintf("%d",  te_indices[n]), :black, 20))  
+    end
 
 end

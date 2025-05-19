@@ -1,1 +1,7 @@
 .vscode/settings.json
+.CondaPkg/meta
+.gitignore
+.CondaPkg/pixi.toml
+.gitignore
+.CondaPkg/pixi.lock
+.CondaPkg/.gitattributes

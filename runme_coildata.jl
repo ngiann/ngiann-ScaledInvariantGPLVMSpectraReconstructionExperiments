@@ -18,7 +18,7 @@ S = (σ/10)*randn(size(Y));
 
 Yobs = Y*C + S*C
 
-JLD2.save("duck_dataset.jld2","Y",Y,"Ytest",Ytest,"S",S,"Yobs",Yobs)
+JLD2.save("duck_dataset.jld2","Y",Y,"Ytest",Ytest,"S",S,"Yobs",Yobs,"tr_indices",tr_indices,"te_indices",te_indices)
 
 ##########
 # warmup #
