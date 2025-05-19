@@ -25,6 +25,6 @@ let
     Yobs = Y*C + Sobs
 
 
-    JLD2.save("duck_dataset.jld2","Y",Y,"Ytest",Ytest,"Sobs",Sobs,"Yobs",Yobs,"tr_indices",tr_indices,"te_indices",te_indices)
+    JLD2.save("scaled_duck_dataset.jld2","Y",Y,"Ytest",Ytest,"Sobs",Sobs,"Yobs",Yobs,"tr_indices",tr_indices,"te_indices",te_indices)
 
 end
