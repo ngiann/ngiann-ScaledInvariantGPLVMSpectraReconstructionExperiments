@@ -1225,9 +1225,9 @@ version = "0.7.0"
 
 [[deps.ScaledInvariantGPLVMSpectraReconstruction]]
 deps = ["DifferentiationInterface", "DispatchDoctor", "Distances", "Distributions", "ForwardNeuralNetworks", "KernelFunctions", "LinearAlgebra", "Mooncake", "Optim", "Printf", "Random", "RectifierExpectations", "StatsFuns"]
-git-tree-sha1 = "4716ecf28d8e3ff6e58d4661158eadda008570b9"
+git-tree-sha1 = "e16ddb48040ec5c3aefd253b5df80d5655949b34"
 uuid = "24fb9fbc-8791-42f4-a5f4-27a61bb78bb8"
-version = "1.0.4-DEV"
+version = "1.0.5-DEV"
 
 [[deps.Scratch]]
 deps = ["Dates"]
