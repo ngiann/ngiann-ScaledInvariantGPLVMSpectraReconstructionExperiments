@@ -5,11 +5,13 @@ pythonplot()
 include("getFakeFilterMatrixB.jl")
 
 
-function create_plot_ducks_scaled_invariant_gplvm()
+function create_plot_ducks_scaled_invariant_ppca()
 
-    X   = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["X"]
-    res = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["res"]
-    net = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["net"]
+    X   = JLD2.load("ppca_scaled_coil_3D.jld2")["X"]
+    res = JLD2.load("ppca_scaled_coil_3D.jld2")["res"]
+ 
+    Yobs = JLD2.load("scaled_duck_dataset.jld2")["Yobs"]
+    Sobs = JLD2.load("scaled_duck_dataset.jld2")["Sobs"]
 
     Ytest = JLD2.load("scaled_duck_dataset.jld2")["Ytest"]
     tr_indices = JLD2.load("scaled_duck_dataset.jld2")["tr_indices"]
@@ -24,12 +26,15 @@ function create_plot_ducks_scaled_invariant_gplvm()
     
     Φ = B*Ytest + Σ
 
-    # # get predictive function for scaled_invariant gplvm
-    infer = scaleinvariantgplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)[1]
+    # get predictive function for scaled_invariant ppca, call for 0 iterations
+    # call like this e.g. infer(B, ϕ, σ; retries = 10)
+    # returns reconstructed object and latent coordinate: copt*(W*zopt + b), zopt    
+    infer = ppca(Yobs, Sobs, res; Q = 3, iterations = 0)[4]
+  
 
     Xtest = map(1:10) do n
 
-        infer(B, Φ[:,n], Σ[:,n]; repeat=10, seed=1)[1]
+        infer(B, Φ[:,n], Σ[:,n]; retries=100)[2]
 
     end
 
@@ -49,16 +54,16 @@ function create_plot_ducks_scaled_invariant_gplvm()
     for n in 1:10
         annotate!(Xtest[n][1]+offset, Xtest[n][2]+offset, Xtest[n][3]+offset, (@sprintf("%d",  te_indices[n]), :black, 15))  
     end
-
+    
 end
 
 
+function ppca_duck_reconstructions()
 
-
-function scale_invariant_gplvm_duck_reconstructions()
-
-    res = JLD2.load("scaleinv_gplvm_scaled_coil_3D.jld2")["res"]
-    net = JLD2.load("scaleinv_gplvm_scaled_coil_3D.jld2")["net"]
+    res = JLD2.load("ppca_scaled_coil_3D.jld2")["res"]
+ 
+    Yobs = JLD2.load("scaled_duck_dataset.jld2")["Yobs"]
+    Sobs = JLD2.load("scaled_duck_dataset.jld2")["Sobs"]
 
     Ytest = JLD2.load("scaled_duck_dataset.jld2")["Ytest"]
 
@@ -68,17 +73,20 @@ function scale_invariant_gplvm_duck_reconstructions()
     σtest = 1e-2
     Σ = randn(MersenneTwister(1), 30, 10)*σtest
 
+    
     Φ = B*Ytest + Σ
 
-    # # get predictive function for scaled_invariant gplvm
-    infer, _, predmean = scaleinvariantgplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)
-
+    # get predictive function for scaled_invariant ppca, call for 0 iterations
+    # call like this e.g. infer(B, ϕ, σ; retries = 10)
+    # returns reconstructed object and latent coordinate: copt*(W*zopt + b), zopt    
+    infer = ppca(Yobs, Sobs, res; Q = 3, iterations = 0)[4]
+  
     recs = map(1:10) do n
 
-        rot180(reshape(predmean(infer(B, Φ[:,n], Σ[:,n]; repeat=10, seed=1)[1]), 16, 16))
+        rot180(reshape(infer(B, Φ[:,n], Σ[:,n]; retries=100)[1],16,16))
 
     end
-    
-    heatmap(reduce(hcat, recs), colorbar=false,  yticks=false, xticks=false, color=:greys, size=(2200.0, 280))
+
+    heatmap(reduce(hcat, recs), colorbar=false, yticks=false, xticks=false, color=:greys, size=(2200.0, 280))
     
 end

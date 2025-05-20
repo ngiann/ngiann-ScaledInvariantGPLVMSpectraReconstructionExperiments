@@ -11,3 +11,6 @@ Train models:
 ```
 include("runme_scaled_ducks.jl")
 ```
+
+
+# 💫 Numerical experiments with spectra
