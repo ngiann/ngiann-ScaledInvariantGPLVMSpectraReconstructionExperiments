@@ -83,3 +83,37 @@ function gplvm_duck_reconstructions()
     heatmap(reduce(hcat, recs), colorbar=false,  yticks=false, xticks=false, color=:greys, size=(2200.0, 280))
     
 end
+
+
+
+
+
+function mse_gplvm_duck_reconstructions()
+
+    res = JLD2.load("gplvm_scaled_coil_3D.jld2")["res"]
+    net = JLD2.load("gplvm_scaled_coil_3D.jld2")["net"]
+
+    Ytest = JLD2.load("scaled_duck_dataset.jld2")["Ytest"]
+
+    B = getFakeFilterMatrixB()
+
+    # create filtered images
+    σtest = 1e-2
+    Σ = randn(MersenneTwister(1), 30, 10)*σtest
+
+    Φ = B*Ytest + Σ
+
+    # # get predictive function for gplvm
+    infer, _, predmean = gplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)
+
+    recs = map(1:10) do n
+
+        predmean(infer(B, Φ[:,n], Σ[:,n]; repeat=10, seed=1))
+
+    end
+    
+    mse = [sum(abs2, recs[i] - Ytest[:,i]) for i in 1:10]
+    
+    return mse#, recs, Ytest
+
+end

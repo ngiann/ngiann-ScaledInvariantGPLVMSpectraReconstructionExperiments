@@ -7,9 +7,9 @@ include("getFakeFilterMatrixB.jl")
 
 function create_plot_ducks_scaled_invariant_gplvm()
 
-    X   = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["X"]
-    res = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["res"]
-    net = JLD2.load("scaleinv_gplvm_scaled_coil_2D.jld2")["net"]
+    X   = JLD2.load("scaleinv_gplvm_scaled_coil_3D.jld2")["X"]
+    res = JLD2.load("scaleinv_gplvm_scaled_coil_3D.jld2")["res"]
+    net = JLD2.load("scaleinv_gplvm_scaled_coil_3D.jld2")["net"]
 
     Ytest = JLD2.load("scaled_duck_dataset.jld2")["Ytest"]
     tr_indices = JLD2.load("scaled_duck_dataset.jld2")["tr_indices"]
@@ -81,4 +81,37 @@ function scale_invariant_gplvm_duck_reconstructions()
     
     heatmap(reduce(hcat, recs), colorbar=false,  yticks=false, xticks=false, color=:greys, size=(2200.0, 280))
     
+end
+
+
+function mse_scale_invariant_gplvm_duck_reconstructions()
+
+    res = JLD2.load("scaleinv_gplvm_scaled_coil_3D.jld2")["res"]
+    net = JLD2.load("scaleinv_gplvm_scaled_coil_3D.jld2")["net"]
+
+    Ytest = JLD2.load("scaled_duck_dataset.jld2")["Ytest"]
+
+    B = getFakeFilterMatrixB()
+
+    # create filtered images
+    σtest = 1e-2
+    Σ = randn(MersenneTwister(1), 30, 10)*σtest
+
+    Φ = B*Ytest + Σ
+
+    # # get predictive function for gplvm
+    infer, _, predmean = scaleinvariantgplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)
+
+    recs = map(1:10) do n
+
+        z, c = infer(B, Φ[:,n], Σ[:,n]; repeat=10, seed=1)
+        
+        predmean(z)*c
+
+    end
+    
+    mse = [sum(abs2, recs[i] - Ytest[:,i]) for i in 1:10]
+    
+    return mse#, recs, Ytest
+
 end
