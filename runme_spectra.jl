@@ -17,7 +17,7 @@ function split_training_testing_spectra_data()
 
     # shufle dataset just to make sure that there is no particular ordering
     rng = MersenneTwister(13)
-    new_indices = randperm(rng, 1185)
+    new_indices = randperm(rng, 1256)
     f = f[:,new_indices]
     σ = σ[:,new_indices]
 
@@ -29,8 +29,8 @@ function split_training_testing_spectra_data()
 
     f_tr = f[1:2:end, 1:1000]
     σ_tr = σ[1:2:end, 1:1000]
-    f_te = f[1:2:end, 1001:1185]
-    σ_te = σ[1:2:end, 1001:1185]
+    f_te = f[1:2:end, 1001:1256]
+    σ_te = σ[1:2:end, 1001:1256]
 
     return f_tr, σ_tr, f_te, σ_te
 
