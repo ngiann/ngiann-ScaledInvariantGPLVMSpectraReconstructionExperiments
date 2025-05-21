@@ -57,12 +57,15 @@ function train_GPLVM_on_spectra(;seed::Int64 = seed)
     JLD2.save(filename, "X", X, "rec", rec, "res", res, "net", net, "fmin", fmin)
 end
 
-# # run scale-invariance GPLVM and save results
-# let
-#     Yobs, Sobs = JLD2.load("scaled_duck_dataset.jld2", "Yobs", "Sobs")
-#     X,rec,res,net,fmin,c,cvar = scaleinvariantgplvm(Yobs, Sobs, iterations = 30_000, Q=3, H = 30, seed=1);
-#     JLD2.save("scaleinv_gplvm_scaled_coil_3D.jld2", "X", X, "rec", rec, "res", res, "net", net, "fmin", fmin, "c", c, "cvar", cvar)
-# end
+# train scale invariant GPLVM and save results
+function train_scale_invariant_GPLVM_on_spectra(;seed::Int64 = seed)
+    local filename = @sprintf("scaleinv_gplvm_spectra_seed=%d.jld2", seed)
+    @printf("Will save result in file |%s|\n\n", filename)
+    local f_tr, σ_tr, = split_training_testing_spectra_data()
+    local X,rec,res,net,fmin,c,cvar = scaleinvariantgplvm(f_tr, σ_tr, iterations = 50_000, Q = 3, H = 30, seed = seed);
+    JLD2.save(filename, "X", X, "rec", rec, "res", res, "net", net, "fmin", fmin, "c", c, "cvar", cvar)
+end
+
 
 # # run scale-invariance PPCA and save results
 # let
