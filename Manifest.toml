@@ -1231,9 +1231,9 @@ version = "1.0.5-DEV"
 
 [[deps.ScaledInvariantGPLVMSpectraReconstructionSpectralData]]
 deps = ["Artifacts", "JLD2", "LazyArtifacts", "Printf"]
-git-tree-sha1 = "718221670d56c3ddb9df1d38ae60bba9bb1ba9ed"
+git-tree-sha1 = "06a2427d49300732e8f7946fcf2afed258334c58"
 uuid = "2b0fa9ba-9b76-4d49-aa09-907878bd84b9"
-version = "0.0.2"
+version = "0.0.3"
 
 [[deps.Scratch]]
 deps = ["Dates"]
