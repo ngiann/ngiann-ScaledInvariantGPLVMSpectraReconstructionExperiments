@@ -2,7 +2,7 @@
 
 julia_version = "1.11.4"
 manifest_format = "2.0"
-project_hash = "f1ca57d14d9fa9b7d969473f7747a77a4ba2d503"
+project_hash = "744758d547c0fff8720e0c9ed616208d5d24ba2d"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "e2478490447631aedba0823d4d7a80b2cc8cdb32"
@@ -885,9 +885,9 @@ version = "1.11.0"
 
 [[deps.Mooncake]]
 deps = ["ADTypes", "ChainRules", "ChainRulesCore", "DiffRules", "ExprTools", "FunctionWrappers", "GPUArraysCore", "Graphs", "InteractiveUtils", "LinearAlgebra", "MistyClosures", "Random", "Test"]
-git-tree-sha1 = "a9122d7a195f712ed56d9e0d399e29547c075c69"
+git-tree-sha1 = "7d4e480154dd572f5e653bd10f36ef50fa61781a"
 uuid = "da2b9cff-9c12-43a0-ae48-6db2b0edb7d6"
-version = "0.4.118"
+version = "0.4.119"
 
     [deps.Mooncake.extensions]
     MooncakeAllocCheckExt = "AllocCheck"
@@ -1228,6 +1228,12 @@ deps = ["DifferentiationInterface", "DispatchDoctor", "Distances", "Distribution
 git-tree-sha1 = "e16ddb48040ec5c3aefd253b5df80d5655949b34"
 uuid = "24fb9fbc-8791-42f4-a5f4-27a61bb78bb8"
 version = "1.0.5-DEV"
+
+[[deps.ScaledInvariantGPLVMSpectraReconstructionSpectralData]]
+deps = ["Artifacts", "JLD2", "LazyArtifacts", "Printf"]
+git-tree-sha1 = "1b9d92acca0e6bc8c04cc61a87d810b3298a2068"
+uuid = "2b0fa9ba-9b76-4d49-aa09-907878bd84b9"
+version = "0.0.1"
 
 [[deps.Scratch]]
 deps = ["Dates"]
