@@ -53,7 +53,7 @@ function train_GPLVM_on_spectra(;seed::Int64 = seed)
     local filename = @sprintf("gplvm_spectra_seed=%d.jld2", seed)
     @printf("Will save result in file |%s|\n\n", filename)
     local f_tr, σ_tr, = split_training_testing_spectra_data()
-    local X,rec,res,net,fmin, = gplvm(f_tr, σ_tr, iterations = 50_000, Q = 3, H = 30, seed = seed);
+    local X,rec,res,net,fmin, = gplvm(f_tr, σ_tr, iterations = 10_000, Q = 3, H = 30, seed = seed);
     JLD2.save(filename, "X", X, "rec", rec, "res", res, "net", net, "fmin", fmin)
 end
 
@@ -62,7 +62,7 @@ function train_scale_invariant_GPLVM_on_spectra(;seed::Int64 = seed)
     local filename = @sprintf("scaleinv_gplvm_spectra_seed=%d.jld2", seed)
     @printf("Will save result in file |%s|\n\n", filename)
     local f_tr, σ_tr, = split_training_testing_spectra_data()
-    local X,rec,res,net,fmin,c,cvar = scaleinvariantgplvm(f_tr, σ_tr, iterations = 50_000, Q = 3, H = 30, seed = seed);
+    local X,rec,res,net,fmin,c,cvar = scaleinvariantgplvm(f_tr, σ_tr, iterations = 10_000, Q = 3, H = 30, seed = seed);
     JLD2.save(filename, "X", X, "rec", rec, "res", res, "net", net, "fmin", fmin, "c", c, "cvar", cvar)
 end
 
