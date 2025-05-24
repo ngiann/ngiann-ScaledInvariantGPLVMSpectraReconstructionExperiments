@@ -67,9 +67,11 @@ function train_scale_invariant_GPLVM_on_spectra(;seed::Int64 = seed)
 end
 
 
-# # run scale-invariance PPCA and save results
-# let
-#     Yobs, Sobs = JLD2.load("scaled_duck_dataset.jld2", "Yobs", "Sobs")
-#     X, res, rec, _, fmin, c = ppca(Yobs, Sobs; iterations = 30_000, Q=3, seed = 1)
-#     JLD2.save("ppca_scaled_coil_3D.jld2", "X", X, "rec", rec, "res", res, "fmin", fmin, "c", c)
-# end
+# train scale-invariance PPCA and save results
+function train_scale_invariant_ppca_on_spectra(;seed::Int64 = seed)
+    local filename = @sprintf("scaleinv_ppca_spectra_seed=%d.jld2", seed)
+    @printf("Will save result in file |%s|\n\n", filename)
+    local f_tr, σ_tr, = split_training_testing_spectra_data()
+    X, res, rec, _, fmin, c = ppca(f_tr, σ_tr; iterations = 30_000, Q=3, seed = 1)
+    JLD2.save(filename, "X", X, "rec", rec, "res", res, "fmin", fmin, "c", c)
+end
