@@ -17,6 +17,8 @@ function create_plot_ducks_scaled_invariant_ppca()
     tr_indices = JLD2.load("scaled_duck_dataset.jld2")["tr_indices"]
     te_indices = JLD2.load("scaled_duck_dataset.jld2")["te_indices"]
 
+    B = getFakeFilterMatrixB()
+    
     # create filtered images
     σtest = 1e-2
     Stest = randn(MersenneTwister(1), 30, 10)*σtest
