@@ -24,8 +24,8 @@ function split_training_testing_spectra_data()
     @printf("Returning:\n");
     @printf("1st argument: training 500×1000 fluxes\n")
     @printf("2nd argument: training 500×1000 std errors\n")
-    @printf("3rd argument: testing 500×185 fluxes\n")
-    @printf("4th argument: testing 500×185 standard errors.\n")
+    @printf("3rd argument: testing 500×256 fluxes\n")
+    @printf("4th argument: testing 500×256 standard errors.\n")
 
     f_tr = f[1:2:end, 1:1000]
     σ_tr = σ[1:2:end, 1:1000]
