@@ -73,7 +73,7 @@ function train_scale_invariant_ppca_on_spectra(;seed::Int64 = seed)
     @printf("Will save result in file |%s|\n\n", filename)
     local f_tr, σ_tr, = split_training_testing_spectra_data()
     f_tr[isinf.(f_tr)] .= mean(filter(x->~isinf(x), f_tr))
-    σ_tr[isinf.(σ_tr)] .= 10000.0
+    σ_tr[isinf.(σ_tr)] .= 10000.0 # inflated variance for missing values
     X, res, rec, _, fmin, c = ppca(f_tr, σ_tr; iterations = 30_000, Q=3, seed = 1)
     JLD2.save(filename, "X", X, "rec", rec, "res", res, "fmin", fmin, "c", c)
 end
