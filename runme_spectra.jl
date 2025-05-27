@@ -16,8 +16,7 @@ function split_training_testing_spectra_data()
     σ[isnan.(σ)] .= Inf;
 
     # shuffle dataset just to make sure that there is no particular ordering
-    rng = MersenneTwister(13)
-    new_indices = randperm(rng, 1256)
+    new_indices = randperm(MersenneTwister(13), 1256)
     f = f[:,new_indices]
     σ = σ[:,new_indices]
 
@@ -36,6 +35,7 @@ function split_training_testing_spectra_data()
 
 end
 
+# WARMUP
 let 
     local f_tr, σ_tr, f_te, σ_te = split_training_testing_spectra_data()
     scaleinvariantgplvm(f_tr[:,1:10], σ_tr[:,1:10], iterations=3, Q=2)
