@@ -37,7 +37,7 @@ end
 
 # WARMUP
 let 
-    local f_tr, σ_tr, f_te, σ_te = split_training_testing_spectra_data()
+    local f_tr, σ_tr, = split_training_testing_spectra_data()
     scaleinvariantgplvm(f_tr[:,1:10], σ_tr[:,1:10], iterations=3, Q=2)
     gplvm(f_tr[:,1:10], σ_tr[:,1:10], iterations = 3, Q = 2)
     ppca(f_tr[:,1:10], σ_tr[:,1:10], iterations = 3, Q = 2) 
