@@ -15,7 +15,7 @@ function split_training_testing_spectra_data()
     f[isnan.(f)] .= Inf;
     σ[isnan.(σ)] .= Inf;
 
-    # shufle dataset just to make sure that there is no particular ordering
+    # shuffle dataset just to make sure that there is no particular ordering
     rng = MersenneTwister(13)
     new_indices = randperm(rng, 1256)
     f = f[:,new_indices]
