@@ -1,6 +1,9 @@
-using Random, JLD2, Statistics
+using JLD2, Statistics, Printf, ScaledInvariantGPLVMSpectraReconstructionSpectralData
+using ScaledInvariantGPLVMSpectraReconstruction, Random, LinearAlgebra
+using SloanUGRIZFilters
 
 include("preparetestphoto.jl")
+include("split_training_testing_spectra_data.jl")
 
 
 function evaluate_scale_invariant_gplvm(;repeat = 10)
@@ -11,7 +14,7 @@ function evaluate_scale_invariant_gplvm(;repeat = 10)
     # we work with every second wavelength
     λ = λ_[1:2:end]; @assert(length(λ) == 500)
 
-    z_te, _, ϕ_te, σ_te, u = preparetestphoto()
+    z_te, targetspectrum, ϕ_te, σ_te, u = preparetestphoto()
 
     _, _, spectrum_te, _ = split_training_testing_spectra_data();
 
