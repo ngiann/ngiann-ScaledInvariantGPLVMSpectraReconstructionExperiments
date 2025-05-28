@@ -20,9 +20,9 @@ let
 
     σ = var(Y);
 
-    Sobs = (σ/10)*randn(size(Y))*C;
+    Sobs = (σ/10)*ones(size(Y))*C;
 
-    Yobs = Y*C + Sobs
+    Yobs = Y*C + Sobs.*randn(rng, size(Y))
 
 
     JLD2.save("scaled_duck_dataset.jld2","Y",Y,"Ytest",Ytest,"Sobs",Sobs,"Yobs",Yobs,"tr_indices",tr_indices,"te_indices",te_indices,"c",diag(C))

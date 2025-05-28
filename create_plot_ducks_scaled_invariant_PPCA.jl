@@ -18,13 +18,12 @@ function create_plot_ducks_scaled_invariant_ppca()
     te_indices = JLD2.load("scaled_duck_dataset.jld2")["te_indices"]
 
     B = getFakeFilterMatrixB()
-
+    
     # create filtered images
     σtest = 1e-2
-    Σ = randn(MersenneTwister(1), 30, 10)*σtest
+    Stest = randn(MersenneTwister(1), 30, 10)*σtest
 
-    
-    Φ = B*Ytest + Σ
+    Φ = B*Ytest + Stest
 
     # get predictive function for scaled_invariant ppca, call for 0 iterations
     # call like this e.g. infer(B, ϕ, σ; retries = 10)
@@ -34,7 +33,7 @@ function create_plot_ducks_scaled_invariant_ppca()
 
     Xtest = map(1:10) do n
 
-        infer(B, Φ[:,n], Σ[:,n]; retries=100)[2]
+        infer(B, Φ[:,n], σtest*ones(30); retries=100)[2]
 
     end
 
@@ -67,14 +66,11 @@ function ppca_duck_reconstructions()
 
     Ytest = JLD2.load("scaled_duck_dataset.jld2")["Ytest"]
 
-    B = getFakeFilterMatrixB()
-
     # create filtered images
     σtest = 1e-2
-    Σ = randn(MersenneTwister(1), 30, 10)*σtest
+    Stest = randn(MersenneTwister(1), 30, 10)*σtest
 
-    
-    Φ = B*Ytest + Σ
+    Φ = B*Ytest + Stest
 
     # get predictive function for scaled_invariant ppca, call for 0 iterations
     # call like this e.g. infer(B, ϕ, σ; retries = 10)
@@ -83,7 +79,7 @@ function ppca_duck_reconstructions()
   
     recs = map(1:10) do n
 
-        rot180(reshape(infer(B, Φ[:,n], Σ[:,n]; retries=100)[1],16,16))
+        rot180(reshape(infer(B, Φ[:,n], σtest*ones(30); retries=100)[1],16,16))
 
     end
 
@@ -105,16 +101,16 @@ function mse_scale_invariant_ppca_duck_reconstructions()
 
     # create filtered images
     σtest = 1e-2
-    Σ = randn(MersenneTwister(1), 30, 10)*σtest
+    Stest = randn(MersenneTwister(1), 30, 10)*σtest
 
-    Φ = B*Ytest + Σ
+    Φ = B*Ytest + Stest
 
     # get predictive function for gplvm
     infer = ppca(Yobs, Sobs, res; Q = 3, iterations = 0)[4]
 
     recs = map(1:10) do n
 
-        infer(B, Φ[:,n], Σ[:,n]; retries=100)[1]
+        infer(B, Φ[:,n], σtest*ones(30); retries=100)[1]
 
     end
     

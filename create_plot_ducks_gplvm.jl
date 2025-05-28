@@ -19,10 +19,9 @@ function create_plot_ducks_gplvm()
 
     # create filtered images
     σtest = 1e-2
-    Σ = randn(MersenneTwister(1), 30, 10)*σtest
+    Stest = randn(MersenneTwister(1), 30, 10)*σtest
 
-    
-    Φ = B*Ytest + Σ
+    Φ = B*Ytest + Stest
 
     # # get predictive function for scaled_invariant gplvm
 
@@ -30,7 +29,7 @@ function create_plot_ducks_gplvm()
 
     Xtest = map(1:10) do n
 
-        infer(B, Φ[:,n], Σ[:,n]; repeat=10, seed=1)
+        infer(B, Φ[:,n], σtest*ones(30); repeat=10, seed=1)
 
     end
 
@@ -67,16 +66,16 @@ function gplvm_duck_reconstructions()
 
     # create filtered images
     σtest = 1e-2
-    Σ = randn(MersenneTwister(1), 30, 10)*σtest
+    Stest = randn(MersenneTwister(1), 30, 10)*σtest
 
-    Φ = B*Ytest + Σ
+    Φ = B*Ytest + Stest
 
     # # get predictive function for gplvm
     infer, _, predmean = gplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)
 
     recs = map(1:10) do n
 
-        rot180(reshape(predmean(infer(B, Φ[:,n], Σ[:,n]; repeat=10, seed=1)), 16, 16))
+        rot180(reshape(predmean(infer(B, Φ[:,n], σtest*ones(30); repeat=10, seed=1)), 16, 16))
 
     end
     
@@ -99,16 +98,16 @@ function mse_gplvm_duck_reconstructions()
 
     # create filtered images
     σtest = 1e-2
-    Σ = randn(MersenneTwister(1), 30, 10)*σtest
+    Stest = randn(MersenneTwister(1), 30, 10)*σtest
 
-    Φ = B*Ytest + Σ
+    Φ = B*Ytest + Stest
 
     # # get predictive function for gplvm
     infer, _, predmean = gplvmpredictive(res=res,net=net, Q=3, D = 256, N = 62)
 
     recs = map(1:10) do n
 
-        predmean(infer(B, Φ[:,n], Σ[:,n]; repeat=10, seed=1))
+        predmean(infer(B, Φ[:,n], σtest*ones(30); repeat=10, seed=1))
 
     end
     
