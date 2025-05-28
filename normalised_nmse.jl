@@ -1,3 +1,4 @@
+using Statistics
 # ŷ is the prediction
 # y is the test data item
 function normalised_nmse(ŷ, y)
