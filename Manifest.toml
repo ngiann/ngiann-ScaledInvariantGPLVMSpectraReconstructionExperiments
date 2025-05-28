@@ -885,9 +885,9 @@ version = "1.11.0"
 
 [[deps.Mooncake]]
 deps = ["ADTypes", "ChainRules", "ChainRulesCore", "DiffRules", "ExprTools", "FunctionWrappers", "GPUArraysCore", "Graphs", "InteractiveUtils", "LinearAlgebra", "MistyClosures", "Random", "Test"]
-git-tree-sha1 = "7d4e480154dd572f5e653bd10f36ef50fa61781a"
+git-tree-sha1 = "89b67ef9b7cc1e30a0c839ca5c984fc09d62064b"
 uuid = "da2b9cff-9c12-43a0-ae48-6db2b0edb7d6"
-version = "0.4.119"
+version = "0.4.120"
 
     [deps.Mooncake.extensions]
     MooncakeAllocCheckExt = "AllocCheck"
@@ -1231,9 +1231,9 @@ version = "1.0.6-DEV"
 
 [[deps.ScaledInvariantGPLVMSpectraReconstructionSpectralData]]
 deps = ["Artifacts", "JLD2", "LazyArtifacts", "Printf"]
-git-tree-sha1 = "06a2427d49300732e8f7946fcf2afed258334c58"
+git-tree-sha1 = "74050f5972c87c91c1faa53105bfeb0620568934"
 uuid = "2b0fa9ba-9b76-4d49-aa09-907878bd84b9"
-version = "0.0.3"
+version = "0.0.5"
 
 [[deps.Scratch]]
 deps = ["Dates"]
