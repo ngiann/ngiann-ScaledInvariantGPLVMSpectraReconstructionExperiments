@@ -29,7 +29,7 @@ function evaluate_scale_invariant_gplvm(;repeat = 10)
 
     z_te, _, ϕ_te, σ_te, u = preparetestphoto()
 
-    _, _, spectrum_te, _ =split_training_testing_spectra_data();
+    _, _, spectrum_te, _ = split_training_testing_spectra_data();
 
     # store here mean squared error
     mse = zeros(256)
