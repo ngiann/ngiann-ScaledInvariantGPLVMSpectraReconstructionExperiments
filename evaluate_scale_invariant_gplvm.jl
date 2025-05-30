@@ -19,7 +19,7 @@ function evaluate_scale_invariant_gplvm(;repeat = 10)
     _, _, spectrum_te, _ = split_training_testing_spectra_data();
 
     # store here mean squared error
-    mse = zeros(256)
+    nmse = zeros(256)
 
     # load trained scale invariant GPLVM
     res, net = JLD2.load("scaleinv_gplvm_spectra_seed=1.jld2", "res","net")
@@ -59,10 +59,11 @@ function evaluate_scale_invariant_gplvm(;repeat = 10)
         # find indicices in test spectrum that are not Infs
         indices_to_compare = findall(x -> ~isinf(x), spectrum_te[:,index])
 
-        mse[index] = mean(abs2, spectrum_te[indices_to_compare,index] - rec[indices_to_compare])
-        display(mse[1:index])
+        nmse[index] = normalised_nmse(rec[indices_to_compare],  spectrum_te[indices_to_compare, index])
+
+        display(nmse[1:index])
     end
 
-    mse
+    nmse
 
 end
