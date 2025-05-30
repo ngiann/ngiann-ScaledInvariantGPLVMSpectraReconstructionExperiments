@@ -87,7 +87,7 @@ end
 
 
 
-function mse_gplvm_duck_reconstructions()
+function nmse_gplvm_duck_reconstructions()
 
     res = JLD2.load("gplvm_scaled_coil_3D.jld2")["res"]
     net = JLD2.load("gplvm_scaled_coil_3D.jld2")["net"]
@@ -111,8 +111,8 @@ function mse_gplvm_duck_reconstructions()
 
     end
     
-    mse = [sum(abs2, recs[i] - Ytest[:,i]) for i in 1:10]
+    nmse = [normalised_nmse(recs[i], Ytest[:,i]) for i in 1:10]
     
-    return mse#, recs, Ytest
+    return nmse#, recs, Ytest
 
 end
