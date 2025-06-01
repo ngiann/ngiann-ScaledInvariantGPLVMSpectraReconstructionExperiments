@@ -6,7 +6,7 @@ include("preparetestphoto.jl")
 include("split_training_testing_spectra_data.jl")
 
 
-function evaluate_ppca(;repeat = 10)
+function evaluate_ppca(filename;repeat = 10)
 
     
     λ_ = loadspectra()[1] # get only wavelength in restframe
@@ -22,7 +22,8 @@ function evaluate_ppca(;repeat = 10)
     nmse = zeros(256)
 
     # load trained scale invariant PPCA
-    res = JLD2.load("scaleinv_ppca_spectra_seed=1.jld2", "res")
+    res = JLD2.load(filename, "res")
+    Q   = size(JLD2.load(filename, "X"), 1)
     
     
     # get predictive function for scaled_invariant ppca, call for 0 iterations
@@ -36,7 +37,7 @@ function evaluate_ppca(;repeat = 10)
     
         σ_tr[isinf.(σ_tr)] .= 10000.0 # inflated variance for missing values
     
-        ppca(f_tr, σ_tr, res; Q = 3, iterations = 0)[4]
+        ppca(f_tr, σ_tr, res; Q = Q, iterations = 0)[4]
 
     end
   

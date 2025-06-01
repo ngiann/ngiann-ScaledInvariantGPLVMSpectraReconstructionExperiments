@@ -6,7 +6,7 @@ include("preparetestphoto.jl")
 include("split_training_testing_spectra_data.jl")
 include("normalised_nmse.jl")
 
-function evaluate_gplvm(;repeat = 10)
+function evaluate_gplvm(filename;repeat = 10)
 
     
     λ_ = loadspectra()[1] # get only wavelength in restframe
@@ -22,7 +22,7 @@ function evaluate_gplvm(;repeat = 10)
     nmse = zeros(256)
 
     # load trained GPLVM
-    res, net = JLD2.load("gplvm_spectra_seed=1.jld2", "res","net")
+    res, net = JLD2.load(filename, "res","net")
     infer,_,pred = gplvmpredictive(res=res,net=net, Q=3, D = 500, N = 1000);
 
     # for each test data item

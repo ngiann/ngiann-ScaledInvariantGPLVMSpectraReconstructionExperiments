@@ -6,7 +6,7 @@ include("preparetestphoto.jl")
 include("split_training_testing_spectra_data.jl")
 
 
-function evaluate_scale_invariant_gplvm(;repeat = 10)
+function evaluate_scale_invariant_gplvm(filename;repeat = 10)
 
     
     λ_ = loadspectra()[1] # get only wavelength in restframe
@@ -22,7 +22,7 @@ function evaluate_scale_invariant_gplvm(;repeat = 10)
     nmse = zeros(256)
 
     # load trained scale invariant GPLVM
-    res, net = JLD2.load("scaleinv_gplvm_spectra_seed=1.jld2", "res","net")
+    res, net = JLD2.load(filename, "res","net")
     infer,_,pred = scaleinvariantgplvmpredictive(res=res,net=net, Q=3, D = 500, N = 1000);
 
     # for each test data item
