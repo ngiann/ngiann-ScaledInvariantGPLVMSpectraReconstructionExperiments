@@ -1,6 +1,7 @@
 using JLD2, Statistics, Printf, ScaledInvariantGPLVMSpectraReconstructionSpectralData
 using ScaledInvariantGPLVMSpectraReconstruction, Random, LinearAlgebra
 using SloanUGRIZFilters
+using DelimitedFiles
 
 include("preparetestphoto.jl")
 include("split_training_testing_spectra_data.jl")
@@ -62,6 +63,23 @@ function evaluate_scale_invariant_gplvm(filename;repeat = 10)
         nmse[index] = normalised_nmse(rec[indices_to_compare],  spectrum_te[indices_to_compare, index])
 
         display(nmse[1:index])
+
+        # for each index, save filter matrix, test spectrum, target photometry and its noise
+        let     
+                
+            local f1 = @sprintf("test/B_%d.csv", index)
+            writedlm(f1, B)
+
+            local f2 = @sprintf("test/test_spectrum_%d.csv", index)
+            writedlm(f2, spectrum_te)
+
+            local f3 = @sprintf("test/test_photometry_%d.csv", index)
+            writedlm(f3, ϕ_te[:,index])
+
+            local f4 = @sprintf("test/test_photometry_error_%d.csv", index)
+            writedlm(f4, σ_te[:,index])
+
+        end
     end
 
     nmse
