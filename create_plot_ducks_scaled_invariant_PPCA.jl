@@ -66,6 +66,8 @@ function ppca_duck_reconstructions()
 
     Ytest = JLD2.load("scaled_duck_dataset.jld2")["Ytest"]
 
+    B = getFakeFilterMatrixB()
+
     # create filtered images
     σtest = 1e-2
     Stest = randn(MersenneTwister(1), 30, 10)*σtest
