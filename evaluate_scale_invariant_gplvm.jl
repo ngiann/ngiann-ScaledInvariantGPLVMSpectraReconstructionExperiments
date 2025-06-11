@@ -5,7 +5,7 @@ using DelimitedFiles
 
 include("preparetestphoto.jl")
 include("split_training_testing_spectra_data.jl")
-
+include("normalised_nmse.jl")
 
 function evaluate_scale_invariant_gplvm(filename;repeat = 10)
 
@@ -29,18 +29,9 @@ function evaluate_scale_invariant_gplvm(filename;repeat = 10)
     # for each test data item
     for index in 1:256
 
-        # shift grid of restframe spectra
-        λobs = λ*(1 + z_te[index])
+        B = readdlm(@sprintf("test/B_%d.csv", index))
 
-        # find interval that falls inside observed interval
-        a = argmin(abs2.(λobs .- u[1])) # this is an index, not a wavelength value
-        b = argmin(abs2.(λobs .- u[end])) # this is an index, not a wavelength value
-        @printf("[%.3f, %.3f]\n", λobs[a], λobs[b])
-
-        # create filter matrix using only g,r,i filters
-        Bred = createFilterMatrix(λobs[a:b])[:,2:4]
-        B = Matrix([zeros(a-1,3); Bred; zeros(500-b,3)]')
-        @assert(size(B) == (3, length(λobs)))
+        @assert(size(B) == (3, 500))
 
         # do inference using trained model
         X0, c = infer(B, ϕ_te[:,index], σ_te[:,index], repeat = repeat)
@@ -52,6 +43,8 @@ function evaluate_scale_invariant_gplvm(filename;repeat = 10)
 
         # plotting below is useful for verifications purposes. CHECKS OUT ✓
         figure(0);cla();
+        # shift grid of restframe spectra
+        λobs = λ*(1 + z_te[index])
         plot(u,targetspectrum[:,index],"r",lw=4)   # plot observed spectrum over common grid of observed wavelengths
         plot(λobs, spectrum_te[:,index],"g",lw=2)  # plot test restframe spectrum at observed wavelengths
         plot(λobs, rec,"b",alpha=1,lw=3)           # plot reconstructed restframe spectrum at observed wavelengths
@@ -64,22 +57,6 @@ function evaluate_scale_invariant_gplvm(filename;repeat = 10)
 
         display(nmse[1:index])
 
-        # for each index, save filter matrix, test spectrum, target photometry and its noise
-        let     
-                
-            local f1 = @sprintf("test/B_%d.csv", index)
-            writedlm(f1, B)
-
-            local f2 = @sprintf("test/test_spectrum_%d.csv", index)
-            writedlm(f2, spectrum_te)
-
-            local f3 = @sprintf("test/test_photometry_%d.csv", index)
-            writedlm(f3, ϕ_te[:,index])
-
-            local f4 = @sprintf("test/test_photometry_error_%d.csv", index)
-            writedlm(f4, σ_te[:,index])
-
-        end
     end
 
     nmse

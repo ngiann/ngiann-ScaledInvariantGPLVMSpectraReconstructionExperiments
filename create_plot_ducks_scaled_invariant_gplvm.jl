@@ -1,4 +1,4 @@
-using ForwardNeuralNetworks, Printf, Optim, Plots, JLD2, Random
+using Printf, Optim, Plots, JLD2, Random
 
 pythonplot()  
 
